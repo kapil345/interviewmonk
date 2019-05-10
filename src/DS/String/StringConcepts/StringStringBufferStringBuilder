@@ -1,0 +1,139 @@
+String vs StringBuilder vs StringBuffer in Java
+2.2
+Prerequisites : String , Initialize a String
+
+Consider below code with three concatenation functions with three different types of parameters, String, StringBuffer and StringBuilder.
+
+// Java program to demonstrate difference between String,
+// StringBuilder and StringBuffer
+class Geeksforgeeks
+{
+    // Concatenates to String
+    public static void concat1(String s1)
+    {
+        s1 = s1 + "forgeeks";
+    }
+
+    // Concatenates to StringBuilder
+    public static void concat2(StringBuilder s2)
+    {
+        s2.append("forgeeks");
+    }
+
+    // Concatenates to StringBuffer
+    public static void concat3(StringBuffer s3)
+    {
+        s3.append("forgeeks");
+    }
+
+    public static void main(String[] args)
+    {
+        String s1 = "Geeks";
+        concat1(s1);  // s1 is not changed
+        System.out.println("String: " + s1);
+
+        StringBuilder s2 = new StringBuilder("Geeks");
+        concat2(s2); // s2 is changed
+        System.out.println("StringBuilder: " + s2);
+
+        StringBuffer s3 = new StringBuffer("Geeks");
+        concat3(s3); // s3 is changed
+        System.out.println("StringBuffer: " + s3);
+    }
+}
+Run on IDE
+Output:
+
+String: Geeks
+StringBuilder: Geeksforgeeks
+StringBuffer: Geeksforgeeks
+Explanation:
+1. Concat1 : In this method, we pass a string “Geeks” and perform “s1 = s1 + ”forgeeks”. The string passed from main() is not changed, this is due to the fact that String is immutable. Altering the value of string creates another object and s1 in concat1() stores reference of new string. References s1 in main() and cocat1() refer to different strings.
+
+2. Concat2 : In this method, we pass a string “Geeks” and perform “s2.append(“forgeeks”)” which changes the actual value of the string (in main) to “Geeksforgeeks”. This is due to the simple fact that StringBuilder is mutable and hence changes its value.
+
+2. Concat3 : StringBuffer is similar to StringBuilder except one difference that StringBuffer is thread safe, i.e., multiple threads can use it without any issue. The thread safety brings a penalty of performance.
+When to use which one :
+
+If a string is going to remain constant throughout the program, then use String class object because a String object is immutable.
+If a string can change (example: lots of logic and operations in the construction of the string) and will only be accessed from a single thread, using a StringBuilder is good enough.
+If a string can change, and will be accessed from multiple threads, use a StringBuffer because StringBuffer is synchronous so you have thread-safety.
+Conversion between types of strings in Java
+
+Sometimes there is a need of converting a string object of different classes like String, StringBuffer, StringBuilder to one-another. Below are some techniques to do the same.
+
+From String to StringBuffer and StringBuilder : This one is easy. We can directly pass String class object to StringBuffer and StringBuilder class constructors. As String class is immutable in java, so for editing a string, we can perform same by converting it to StringBuffer or StringBuilder class objects. Below is the java program to demonstrate the same.
+// Java program to demonstrate conversion from
+// String to StringBuffer and StringBuilder.
+public class Test
+{
+    public static void main(String[] args)
+    {
+        String str = "Geeks";
+
+        // conversion from String object to StringBuffer
+        StringBuffer sbr = new StringBuffer(str);
+        sbr.reverse();
+        System.out.println(sbr);
+
+        // conversion from String object to StringBuilder
+        StringBuilder sbl = new StringBuilder(str);
+        sbl.append("ForGeeks");
+        System.out.println(sbl);
+    }
+}
+Run on IDE
+Output:
+
+skeeG
+GeeksForGeeks
+From StringBuffer and StringBuilder to String : This conversions can be perform using toString() method which is overridden in both StringBuffer and StringBuilder classes.
+Below is the java program to demonstrate the same. Note that while we use toString() method, a new String object(in Heap area) is allocated and initialized to character sequence currently represented by StringBuffer object, that means the subsequent changes to the StringBuffer object do not affect the contents of the String object.
+// Java program to demonstrate conversion from
+// String to StringBuffer and StringBuilder.
+public class Test
+{
+    public static void main(String[] args)
+    {
+        StringBuffer sbr = new StringBuffer("Geeks");
+
+        // conversion from StringBuffer object to String
+        String str = sbr.toString();
+        System.out.println(str);
+
+        // conversion from StringBuilder object to String
+        String str1 = sbr.toString();
+        System.out.println(str1);
+
+        // changing StringBuffer object sbr
+        // but String object(str) doesn't change
+        sbr.append("ForGeeks");
+        System.out.println(sbr);
+        System.out.println(str);
+
+    }
+}
+Run on IDE
+Output:
+
+Geeks
+Geeks
+GeeksForGeeks
+Geeks
+From StringBuffer to StringBuilder or vice-versa : This conversion is tricky.There is no direct way to convert the same. In this case, We can use a String class object. We first convert StringBuffer/StringBuilder object to String using toString() method and then from String to StringBuilder/StringBuffer using constructors.Below is the java program to demonstrate the same.
+// Java program to demonstrate conversion from
+// String to StringBuffer and StringBuilder.
+public class Test
+{
+    public static void main(String[] args)
+    {
+        StringBuffer sbr = new StringBuffer("Geeks");
+
+        // conversion from StringBuffer object to StringBuilder
+        String str = sbr.toString();
+        StringBuilder sbl = new StringBuilder(str);
+
+        System.out.println(sbl);
+
+    }
+}

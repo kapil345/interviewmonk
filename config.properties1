@@ -1,0 +1,5 @@
+yahooPriority=1
+gmailPriority=2
+outlookPriority=3
+pop3Priority=4
+smtpPriority=5
